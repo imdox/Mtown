@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "817701798527",
+    "firebase_url": "https://mtown-ebc07.firebaseio.com",
+    "project_id": "mtown-ebc07",
+    "storage_bucket": "mtown-ebc07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817701798527:android:9ad5ade245902b49",
+        "android_client_info": {
+          "package_name": "com.mtown.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817701798527-hcrae8o45b20hmdi2ko24so4gk3eju3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mtown.app",
+            "certificate_hash": "bfc6dc6a9add56e6e4f1e5966f3dad0f24fac5af"
+          }
+        },
+        {
+          "client_id": "817701798527-aknn9p55h3h9pkngfjqur4agvb87ick6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFV9hxAH0TuEHPdkze7fTo7rZ_j2mnf5M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817701798527-aknn9p55h3h9pkngfjqur4agvb87ick6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

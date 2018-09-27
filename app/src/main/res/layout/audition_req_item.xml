@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+
+                <TextView
+                    android:id="@+id/txtRequestAuditionTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Audition Title"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:maxLines="2"
+                    android:padding="8dp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/txtReqRole"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Audition role"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:padding="4dp"
+                    android:typeface="sans" />
+
+                <TextView
+                    android:id="@+id/txtCreatedBy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Audition Created"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp"
+                    android:padding="4dp"
+                    android:typeface="sans" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/gray"></View>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="right"
+                    android:weightSum="1"
+                    android:orientation="horizontal"
+                    >
+
+                    <Button
+                        android:id="@+id/btnAcceptReq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="ACCEPT"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:background="@color/white"
+                        android:layout_weight="0.33"
+                        android:typeface="sans" />
+
+                    <Button
+                        android:id="@+id/btnRejectReq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="REJECT"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:layout_weight="0.33"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        android:typeface="sans" />
+
+                    <Button
+                        android:id="@+id/btnDetailsReq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DETAILS"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:background="@color/white"
+                        android:typeface="sans" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+

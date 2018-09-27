@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item android:id="@+id/idSearch"
+      android:title="Search"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_search_black_24dp"
+      app:showAsAction="always" />
+
+  <item android:id="@+id/idCreateAudition"
+      android:title="Create Audition"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_person_outline_black_24dp"
+      app:showAsAction="never" />
+
+  <item android:id="@+id/idAuditionList"
+      android:title="Audition List"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_person_outline_black_24dp"
+      app:showAsAction="never" />
+
+  <item android:id="@+id/idAuditionReqList"
+      android:title="Request List"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_person_outline_black_24dp"
+      app:showAsAction="never" />
+
+  <item android:id="@+id/idLogOut"
+      android:title="Logout"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_power_settings_new_black_24dp"
+      app:showAsAction="never" />
+
+</menu>

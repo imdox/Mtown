@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Mtown</string>
+    <string name="tagAppData">AppData</string>
+    <string name="tagIsLoginUser">isLogin</string>
+    <string name="defaultURL">http://imdox.com/mtown/api.php</string>
+
+
+    <string name="tagStatus">status</string>
+    <string name="tagStatusValue">success</string>
+    <string name="tagResult">data</string>
+    <string name="tag">tag</string>
+    <string name="tagSuccessMsg">msg</string>
+    <string name="tagError">error</string>
+
+    <string name="tagIndex">pageIndex</string>
+
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+
+
+    <!--tags-->
+    <string name="tagLogin">login</string>
+    <string name="tagUserId">user_id</string>
+    <string name="tagGroupType">group_type</string>
+    <string name="tagIsProfile">is_profile</string>
+
+    <string name="tagModelId">model_id</string>
+    <string name="tagOTP">otp</string>
+
+
+</resources>
