@@ -3,6 +3,9 @@ package com.mtown.app.home;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,13 +31,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
-import com.mtown.app.ListActivity;
 import com.mtown.app.R;
 import com.mtown.app.admin.AuditionListActivity;
 import com.mtown.app.admin.CreateAuditionActivity;
 import com.mtown.app.admin.RequestListActivity;
 import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.dao.ModelDAO;
+import com.mtown.app.search.SearchActivity;
 import com.mtown.app.support.AppController;
 import com.mtown.app.user.AddEditUserActivity;
 import com.mtown.app.user.ModelListAdapter;
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        //checkPermission(Manifest.permission.CALL_PHONE);
         AdRequest addRequest = new AdRequest.Builder()
                 .addTestDevice("E07693B78D043837CF9399C247ABE73D").build();
         interstitialAd = new InterstitialAd(MainActivity.this);
@@ -176,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                                 for(int i=0;i<jsonArray.length();i++){
                                     JSONObject jsonObjectData = jsonArray.getJSONObject(i);
                                     /*To get Image*/
-                                    String imgUrls[] = jsonObjectData.getString("model_images").split(",");;
+                                    String imgUrls[] = jsonObjectData.getString("model_images").split(",");
 
                                     /*Bind data to Data Model */
                                     ModelDAO newsDAO = new ModelDAO(jsonObjectData.getString("id"),
@@ -195,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(MainActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)),Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
@@ -271,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
         switch(item.getItemId()) {
         case R.id.idLogOut:
              AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Are you sure, You want to logout");
+            alertDialogBuilder.setMessage("Are you sure, You want to logout?");
                     alertDialogBuilder.setPositiveButton("yes",
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -323,6 +326,22 @@ public class MainActivity extends AppCompatActivity {
 
         }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private static final int MAKE_CALL_PERMISSION_REQUEST_CODE = 1;
+    private boolean checkPermission(String permission) {
+        return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case MAKE_CALL_PERMISSION_REQUEST_CODE :
+                if (grantResults.length > 0 && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, "You can call the number by clicking on the button", Toast.LENGTH_SHORT).show();
+                }
+                return;
+        }
     }
 
     @Override

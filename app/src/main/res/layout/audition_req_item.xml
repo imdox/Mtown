@@ -59,6 +59,66 @@
                     android:padding="4dp"
                     android:typeface="sans" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layUserAction"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/txtUserAction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="User Action"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:padding="4dp"
+                        android:typeface="sans" />
+
+                    <TextView
+                        android:id="@+id/txtcmtH"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="User Comment"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp"
+                        android:typeface="sans" />
+
+                    <TextView
+                        android:id="@+id/txtUserComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="User Comment not available"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:layout_marginLeft="8dp"
+                        android:padding="4dp"
+                        android:typeface="sans" />
+
+                    <TextView
+                        android:id="@+id/txtModelImages"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Model Images"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:padding="4dp"
+                        android:typeface="sans" />
+
+                    <Gallery
+                        android:id="@+id/gallery"
+                        android:layout_below="@+id/selectedImg"
+                        android:layout_width="fill_parent"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="16dp"
+                        android:animationDuration="3000"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/rounded_border_gray"
+                        android:layout_height="80dp" />
+                </LinearLayout>
+
 
                 <View
                     android:layout_width="match_parent"
@@ -81,7 +141,6 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="12sp"
                         android:gravity="center"
-                        android:visibility="gone"
                         android:background="@color/white"
                         android:layout_weight="0.33"
                         android:typeface="sans" />
@@ -96,17 +155,17 @@
                         android:layout_weight="0.33"
                         android:textColor="@color/colorPrimary"
                         android:textSize="12sp"
-                        android:visibility="gone"
                         android:typeface="sans" />
 
                     <Button
                         android:id="@+id/btnDetailsReq"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="DETAILS"
                         android:textColor="@color/colorPrimary"
                         android:textSize="12sp"
                         android:gravity="center"
+                        android:layout_weight="0.33"
                         android:background="@color/white"
                         android:typeface="sans" />
                 </LinearLayout>

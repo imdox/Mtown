@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.TooltipCompat;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.mtown.app.R;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.home.MainActivity;
@@ -39,16 +41,20 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        getSupportActionBar().hide();
-        //getSupportActionBar().setTitle("User Profile");
-        //get Intent
-        Intent intentData = getIntent();
+        getSupportActionBar().setTitle("User Profile");
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        } Intent intentData = getIntent();
         currentPage = intentData.getIntExtra(getString(R.string.tagIndex),0);
-
+        int index;
         if(currentPage>-1){
             modelProfileDAOS = MainActivity.modelDAOS;
+            index=currentPage;
         }else {
             modelProfileDAOS = MainActivity.profileDetails;
+            index=0;
         }
 
         imgBack = (ImageView)findViewById(R.id.imgBack);
@@ -58,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
         viewPager =(ViewPager)findViewById(R.id.viewPager);
         //set the adapter that will create the individual pages
         viewPager.setAdapter(new ModelProfileAdapter());
-        viewPager.setCurrentItem(currentPage);
+        viewPager.setCurrentItem(index);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity {
             ((TextView)page.findViewById(R.id.txtLanguages)).setTypeface(AppController.getDefaultFont(ProfileActivity.this));
             ((TextView)page.findViewById(R.id.txtAge)).setTypeface(AppController.getDefaultFont(ProfileActivity.this));
 
-            if(currentPage==-1 || AppController.getSharedPref(ProfileActivity.this).getString(getString(R.string.tagGroupType), "").equals("admin")){
+            if(currentPage==-1){
                 ((ImageView)page.findViewById(R.id.btnEditProfile)).setVisibility(View.VISIBLE);
                 ((ImageView)page.findViewById(R.id.btnEditProfile)).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -117,20 +123,24 @@ public class ProfileActivity extends AppCompatActivity {
                 ((ImageView)page.findViewById(R.id.imgStatus)).setImageResource(R.drawable.ic_check_circle_green_24dp);
             }else {
                 ((ImageView)page.findViewById(R.id.imgStatus)).setImageResource(R.drawable.ic_check_circle_black_24dp);
-                TooltipCompat.setTooltipText(((ImageView)page.findViewById(R.id.imgStatus)), "Profile not approved.");
-                if(AppController.getSharedPref(ProfileActivity.this).getString(getString(R.string.tagGroupType), "").equals("admin")){
-                    ((TextView)page.findViewById(R.id.txtRequestAudition)).setVisibility(View.VISIBLE);
-                }else {
-                    ((TextView)page.findViewById(R.id.txtRequestAudition)).setVisibility(View.GONE);
-                }
+//                if(AppController.getSharedPref(ProfileActivity.this).getString(getString(R.string.tagGroupType), "").equals("admin")){
+//                    ((TextView)page.findViewById(R.id.txtRequestAudition)).setVisibility(View.VISIBLE);
+//                }else {
+//                    ((TextView)page.findViewById(R.id.txtRequestAudition)).setVisibility(View.GONE);
+//                }
             }
 
             ((TextView)page.findViewById(R.id.user_profile_name)).setText(modelProfileDAOS.get(position).getFirstname() +" "+ modelProfileDAOS.get(position).getLastname());
             ((TextView)page.findViewById(R.id.user_profile_short_bio)).setText(modelProfileDAOS.get(position).getDesignation());
 
-            Glide.with(ProfileActivity.this).load(modelProfileDAOS.get(position).getProfile_image()).into(((ImageView)page.findViewById(R.id.user_profile_photo)));
-            int index = AppController.randomNumberInRange(0,(modelProfileDAOS.get(position).getModel_images().length-1));
-            Glide.with(ProfileActivity.this).load(modelProfileDAOS.get(position).getModel_images()[index]).into(((ImageView)page.findViewById(R.id.header_cover_image)));
+            Glide.with(ProfileActivity.this)
+                     .load(modelProfileDAOS.get(position).getProfile_image())
+                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                    .into(((ImageView)page.findViewById(R.id.user_profile_photo)));
+
+            Glide.with(ProfileActivity.this).load(modelProfileDAOS.get(position).getModel_images()[0])
+                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                    .into(((ImageView)page.findViewById(R.id.header_cover_image)));
 
             ((TextView)page.findViewById(R.id.txtHeadingAboutValue)).setText(modelProfileDAOS.get(position).getAbout_you());
             ((TextView)page.findViewById(R.id.txtAge)).setText("Age : "+ modelProfileDAOS.get(position).getAge());
@@ -194,8 +204,16 @@ public class ProfileActivity extends AppCompatActivity {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View page = inflater.inflate(R.layout.image_swiper, null);
-
-            Glide.with(ProfileActivity.this).load(modelProfileDAOS.get(currentPage).getModel_images()[position]).into(((ImageView)page.findViewById(R.id.imgModel)));
+            int index;
+            if(currentPage==-1){
+                index=0;
+            }else{
+                index=currentPage;
+            }
+            String strUrl = modelProfileDAOS.get(index).getModel_images()[position];
+            Glide.with(ProfileActivity.this).load(strUrl)
+                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                    .into(((ImageView)page.findViewById(R.id.imgModel)));
            // ((TouchImageView)page.findViewById(R.id.imgModel)).setMaxZoom(5f);
             //Add the page to the front of the queue
             ((ViewPager) container).addView(page, 0);

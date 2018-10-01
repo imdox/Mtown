@@ -2,9 +2,18 @@ package com.mtown.app.dao;
 
 public class AuditionDAO {
     private String audition_title,created_by_id,created_by_name,description
-    ,id,note,role_type,total_model;
+    ,id,note,role_type,total_model,mobile;
 
-    public AuditionDAO(String audition_title, String created_by_id, String created_by_name, String description, String id, String note, String role_type, String total_model) {
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public AuditionDAO(String audition_title, String created_by_id, String created_by_name, String description, String id, String note,
+                       String role_type, String total_model, String mobile) {
         this.audition_title = audition_title;
         this.created_by_id = created_by_id;
         this.created_by_name = created_by_name;
@@ -13,6 +22,7 @@ public class AuditionDAO {
         this.note = note;
         this.role_type = role_type;
         this.total_model = total_model;
+        this.mobile = mobile;
     }
 
     public String getAudition_title() {

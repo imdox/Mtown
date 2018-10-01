@@ -1,5 +1,6 @@
-package com.mtown.app.home;
+package com.mtown.app.search;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -48,11 +49,19 @@ public class SearchActivity extends AppCompatActivity {
 
     private InterstitialAd interstitialAd;
     private EditText editText;
+    //private ImageView imgSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         AdRequest addRequest = new AdRequest.Builder()
                 .addTestDevice("E07693B78D043837CF9399C247ABE73D").build();
         interstitialAd = new InterstitialAd(SearchActivity.this);
@@ -66,7 +75,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
+        //imgSearch = (ImageView)findViewById(R.id.imgSearch);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         // Set Layout Manager
@@ -78,30 +87,33 @@ public class SearchActivity extends AppCompatActivity {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String str = s.toString();
-                    if(str.length()>3){
-                        searchModel(str);
-                    }else if(str.length()<1){
-                        searchMDAOS.clear();
-                        setSearchAdapter(1);
-                    }
+                    try{
+                        String str = s.toString();
+                        if(str.length()>3){
+                            searchModel(str);
+                        }else if(str.length()<1){
+                            if(!searchMDAOS.isEmpty()){
+                                searchMDAOS.clear();
+                            }
+                          //  imgSearch.setVisibility(View.VISIBLE);
+                            setSearchAdapter(1);
+                        }
+                    }catch (Exception e){
+                     }
                 // TODO Auto-generated method stub
             }
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                 // TODO Auto-generated method stub
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
                 // TODO Auto-generated method stub
             }
         });
     }
-
 
     public void searchModel(final String strSearch) {
         try {
@@ -180,6 +192,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void setSearchAdapter(int listType){
         try {
+            //imgSearch.setVisibility(View.GONE);
             adapterList = new ArrayList<>();
             switch(listType){
                 case AppController.TYPE_MODEL_SEARCH:
@@ -194,6 +207,4 @@ public class SearchActivity extends AppCompatActivity {
         } catch (Exception e){
         }
     }
-
-
 }

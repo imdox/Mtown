@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.mtown.app.R;
 import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.support.AppController;
@@ -37,7 +38,12 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(SplashScreenActivity.this).clearDiskCache();
+            }
+        }).start();
         StartAnimations();
          /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/

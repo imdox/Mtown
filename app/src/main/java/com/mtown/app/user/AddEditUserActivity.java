@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -35,11 +36,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.mtown.app.R;
+import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.home.MainActivity;
 import com.mtown.app.support.AppController;
 import com.mtown.app.support.GalleryImageAdapter;
+import com.mtown.app.support.GalleryURLImageAdapter;
 import com.mtown.app.support.Validation;
 
 import org.json.JSONArray;
@@ -47,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -72,6 +77,12 @@ public class AddEditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_user);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         btnAddEditProfile = findViewById(R.id.btnAddEditProfile);
         btnProfileImage = findViewById(R.id.btnProfileImage);
@@ -90,7 +101,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         edtDesignation = findViewById(R.id.edtDesignation);
         edtAge = findViewById(R.id.edtAge);
         txtLanguages = findViewById(R.id.txtLanguages);
-        imgData = (ImageView)findViewById(R.id.selectedImg);
+
 
         edtFirstName.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
         edtLastName.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
@@ -180,7 +191,6 @@ public class AddEditUserActivity extends AppCompatActivity {
             ArrayList<ModelDAO> modelDAOS = MainActivity.profileDetails;
             edtFirstName.setText(modelDAOS.get(0).getFirstname());
             edtLastName.setText(modelDAOS.get(0).getLastname());
-            txtMobile.setText(modelDAOS.get(0).getMobile());
             txtEmail.setText(modelDAOS.get(0).getEmail());
             edtAbout.setText(modelDAOS.get(0).getAbout_you());
             edtHeight.setText(modelDAOS.get(0).getHeight());
@@ -199,24 +209,36 @@ public class AddEditUserActivity extends AppCompatActivity {
                 radioFemale.setChecked(true);
             }
             if(modelDAOS.get(0).getProfile_image().length()>5){
-                Glide.with(AddEditUserActivity.this).load(modelDAOS.get(0).getProfile_image()).into(imgData);
+                imgData = (ImageView)findViewById(R.id.selectedImg);
+                Glide.with(AddEditUserActivity.this).load(modelDAOS.get(0).getProfile_image())
+                        .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                        .into(imgData);
             }
+            if(modelDAOS.get(0).getModel_images().length>4){
+                gallery = (Gallery) findViewById(R.id.gallery);
+                gallery.setSpacing(5);
+                final GalleryURLImageAdapter galleryImageAdapter = new GalleryURLImageAdapter(this,modelDAOS.get(0).getModel_images());
+                gallery.setAdapter(galleryImageAdapter);
+            }
+            btnAddEditProfile.setText("Update Profile");
         }
 
+        txtMobile.setText(AppController.getSharedPref(AddEditUserActivity.this).getString("mobile",""));
         jsonObject = new JSONObject();
-        encodedCImageListold = new ArrayList<>();
+        encodedCImageList = new ArrayList<>();
         encodedPImageList = new ArrayList<>();
-
     }
 
     private ArrayList<Uri> imagesCUriList;
     private ArrayList<Uri> imagesPUriList;
-    private ArrayList<String> encodedCImageListold;
+    private ArrayList<String> encodedCImageList;
     private ArrayList<String> encodedPImageList;
     private ArrayList<Uri> mArrayUri;
     private String imageURI;
     private boolean isUserProfile=true;
     private ImageView imgData;
+    private String profileExt;
+    private ArrayList<String> extension;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -227,10 +249,9 @@ public class AddEditUserActivity extends AppCompatActivity {
                     && null != data) {
                 // Get the Image from data
 
-
-
                 if(isUserProfile){
                     String[] filePathColumnP = { MediaStore.Images.Media.DATA };
+
                     imagesPUriList = new ArrayList<Uri>();
                     encodedPImageList.clear();
                     if(data.getData()!=null){
@@ -245,25 +266,30 @@ public class AddEditUserActivity extends AppCompatActivity {
 
                         int columnIndex = cursor.getColumnIndex(filePathColumnP[0]);
                         imageURI  = cursor.getString(columnIndex);
+                        double size = imageURI.length() / 1024;
+                        Toast.makeText(AddEditUserActivity.this,"Size : " +String.valueOf(size),Toast.LENGTH_SHORT).show();
+                        profileExt = imageURI.substring(imageURI.lastIndexOf("."));
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
                         String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
                         encodedPImageList.add(encodedImage);
                         cursor.close();
+                        imgData = (ImageView)findViewById(R.id.selectedImg);
                         imgData.setImageURI(mImageUri);
                     }else {
-                        Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "You haven't choose profile image", Toast.LENGTH_LONG).show();
                     }
                 }else{
                     String[] filePathColumnC = { MediaStore.Images.Media.DATA };
                     imagesCUriList = new ArrayList<Uri>();
-                    encodedCImageListold.clear();
+                    extension = new ArrayList<String>();
+                    encodedCImageList.clear();
                     if (data.getClipData() != null) {
                         ClipData mClipData = data.getClipData();
                         mArrayUri = new ArrayList<Uri>();
                         if((mClipData.getItemCount()>5) || (mClipData.getItemCount()<5) ){
-                            Toast.makeText(this, "Please select 5 images.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "You can choose only 5 images.", Toast.LENGTH_LONG).show();
                             return;
                         }
 
@@ -279,123 +305,57 @@ public class AddEditUserActivity extends AppCompatActivity {
 
                             int columnIndex = cursor.getColumnIndex(filePathColumnC[0]);
                             imageURI  = cursor.getString(columnIndex);
+                            File file = new File(imageURI);
+                            if(file.exists()) {
+                                double bytes = file.length();
+                                double kilobytes = (bytes / 1024);
+                                Toast.makeText(AddEditUserActivity.this,"file size : "+kilobytes,Toast.LENGTH_SHORT).show();
+                            }
+                            extension.add(imageURI.substring(imageURI.lastIndexOf(".")));
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
                             String encodedImage = Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
-                            encodedCImageListold.add(encodedImage);
+                            encodedCImageList.add(encodedImage);
                             cursor.close();
                         }
                         gallery = (Gallery) findViewById(R.id.gallery);
-                        gallery.setSpacing(2);
+                        gallery.setSpacing(5);
                         final GalleryImageAdapter galleryImageAdapter= new GalleryImageAdapter(this,mArrayUri);
                         gallery.setAdapter(galleryImageAdapter);
                     }
                 }
             } else {
-                Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "You haven't choose any images.", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-   /* private void createUpdateProfile(){
-        try {
-            progressBar.setVisibility(View.VISIBLE);
-            StringRequest strReq = new StringRequest(Request.Method.POST, getString(R.string.defaultURL), new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        progressBar.setVisibility(View.GONE);
-                        JSONObject jsonObject = new JSONObject(response);
-                        if(jsonObject.getString(getString(R.string.tagStatus)).equals(getString(R.string.tagStatusValue))){
-                            AppController.getSharedPrefEditor(AddEditUserActivity.this).putString(getString(R.string.tagIsProfile), "1").commit();
-                            AppController.getSharedPrefEditor(AddEditUserActivity.this).putString(getString(R.string.tagModelId), jsonObject.getString(getString(R.string.tagModelId))).commit();
-                            Toast.makeText(AddEditUserActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            Toast.makeText(AddEditUserActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)),Toast.LENGTH_LONG).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(AddEditUserActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(AddEditUserActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
-                    if (error instanceof TimeoutError || error instanceof NoConnectionError)
-                        Log.d("TAG.......", "v1: " + error);
-                    else if (error instanceof AuthFailureError)
-                        Log.d("TAG..........", "v2: " + error);
-                    else if (error instanceof ServerError)
-                        Log.d("TAG.........", "v3: " + error);
-                    else if (error instanceof NetworkError)
-                        Log.d("TAG.......", "v4: " + error);
-                    else if (error instanceof ParseError)
-                        Log.d("TAG.......", "v5: " + error);
-                }
-            }) {
-
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put(getString(R.string.tag), "create_update_model");
-                    params.put("id", AppController.getSharedPref(AddEditUserActivity.this).getString(getString(R.string.tagModelId),"0"));
-                    params.put("firstname", edtFirstName.getText().toString().trim());
-                    params.put("lastname", edtLastName.getText().toString().trim());
-                    params.put("mobile", txtMobile.getText().toString().trim());
-                    params.put("about_you", edtAbout.getText().toString().trim());
-                    params.put("profile_image", "");
-                    params.put("model_images", "");
-                    params.put("email", txtEmail.getText().toString().trim());
-                    params.put("age", edtAge.getText().toString().trim());
-                    params.put("gender", radioSexButton.getText().toString().trim());
-                    params.put("experience", edtExperience.getText().toString().trim());
-                    params.put("designation", edtDesignation.getText().toString().trim());
-                    params.put("height", edtHeight.getText().toString().trim());
-                    params.put("weight", edtWeight.getText().toString().trim());
-                    params.put("skin_color", edtSkinColor.getText().toString().trim());
-                    params.put("eye_color", edtEyeColor.getText().toString().trim());
-                    params.put("known_languages", txtLanguages.getText().toString().trim());
-                    params.put("user_id", AppController.getSharedPref(AddEditUserActivity.this).getString(getString(R.string.tagUserId),""));
-                  return params;
-                }
-            };
-            strReq.setRetryPolicy(new DefaultRetryPolicy(10000, 2, DefaultRetryPolicy.DEFAULT_TIMEOUT_MS));
-            AppController.getInstance().addToRequestQueue(strReq);
-        } catch (Exception e) {
-        }
-    }
-*/
     private void createUpdatePI(){
         try{
             progressBar.setVisibility(View.VISIBLE);
             JSONArray jsonCArray = new JSONArray();
             JSONArray jsonPArray = new JSONArray();
-            if (encodedPImageList.isEmpty()){
-                Toast.makeText(this, "Please select profile image first.", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
-            if (encodedCImageListold.isEmpty()){
-                Toast.makeText(this, "Please select 5 cover images.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            try{
+                for (String encoded: encodedPImageList){
+                    jsonPArray.put(encoded);
+                }
 
-            for (String encoded: encodedPImageList){
-                jsonPArray.put(encoded);
-            }
-
-            for (String encoded: encodedCImageListold){
-                jsonCArray.put(encoded);
+                for (String encoded: encodedCImageList){
+                    jsonCArray.put(encoded);
+                }
+            }catch (Exception e){
             }
 
             try {
+                String strExt = extension.toString().replace("[","");
+                jsonObject.put("profile_ext", profileExt);
+                jsonObject.put("model_ext", strExt.replace("]",""));
                 jsonObject.put("profile_image", jsonPArray);
                 jsonObject.put("model_images", jsonCArray);
                 jsonObject.put(getString(R.string.tag), "create_update_model");
@@ -404,8 +364,6 @@ public class AddEditUserActivity extends AppCompatActivity {
                 jsonObject.put("lastname", edtLastName.getText().toString().trim());
                 jsonObject.put("mobile", txtMobile.getText().toString().trim());
                 jsonObject.put("about_you", edtAbout.getText().toString().trim());
-                jsonObject.put("profile_image", "");
-                jsonObject.put("model_images", "");
                 jsonObject.put("email", txtEmail.getText().toString().trim());
                 jsonObject.put("age", edtAge.getText().toString().trim());
                 jsonObject.put("gender", radioSexButton.getText().toString().trim());
@@ -443,9 +401,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
-                    Log.e("Error",volleyError.toString());
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(getApplication(), "Error in uploading images.", Toast.LENGTH_SHORT).show();
                 }
             });
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy( 200*30000,

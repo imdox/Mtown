@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user.AddEditUserActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="50dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layRegister"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="12dp">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:layout_marginTop="8dp"
+                                android:orientation="vertical">
+
+                                <EditText
+                                    android:id="@+id/editUserComment"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="User Comment"
+                                    android:gravity="left"
+                                    android:background="@drawable/edittext_bg"
+                                    android:textSize="14sp"
+                                    android:lines="8"
+                                    android:padding="8dp"
+                                    android:typeface="sans" />
+
+                                <TextView
+                                    android:id="@+id/txtGalleryH"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="16dp"
+                                    android:textStyle="bold"
+                                    android:textColor="#000"
+                                    android:text="Select images for audition"/>
+
+
+                                <Gallery
+                                    android:id="@+id/gallery"
+                                    android:layout_below="@+id/selectedImg"
+                                    android:layout_width="fill_parent"
+                                    android:layout_gravity="left"
+                                    android:layout_marginTop="8dp"
+                                    android:animationDuration="3000"
+                                    android:background="@drawable/rounded_border_gray"
+                                    android:layout_height="120dp" />
+                                <Button
+                                    android:id="@+id/btnSelectImages"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="@drawable/edittext_bg"
+                                    android:layout_marginTop="8dp"
+                                    android:text="Add images"
+                                    android:textSize="@dimen/buttonSize1" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                    </ScrollView>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnAcceptRequest"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:text="AcceptRequest"
+        android:textColor="@color/white"
+        android:textSize="@dimen/buttonSize1" />
+
+
+</RelativeLayout>

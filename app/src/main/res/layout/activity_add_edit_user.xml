@@ -84,7 +84,8 @@
                                     android:id="@+id/gallery"
                                     android:layout_below="@+id/selectedImg"
                                     android:layout_width="fill_parent"
-                                    android:gravity="left"
+                                    android:layout_gravity="left"
+                                    android:animationDuration="3000"
                                     android:background="@drawable/rounded_border_gray"
                                     android:layout_height="120dp" />
                                 <Button
@@ -117,6 +118,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_margin="8dp"
+                                        android:inputType="text"
                                         android:background="@drawable/edittext_bg"
                                         android:hint="First name"
                                         android:padding="12dp"
@@ -136,6 +138,7 @@
                                         android:layout_margin="8dp"
                                         android:background="@drawable/edittext_bg"
                                         android:hint="Last name"
+                                        android:inputType="text"
                                         android:padding="12dp"
                                         android:textSize="@dimen/buttonSize1" />
                                 </LinearLayout>
@@ -183,6 +186,7 @@
                                 android:layout_margin="8dp"
                                 android:background="@drawable/edittext_bg"
                                 android:hint="Mobile number"
+                                android:enabled="false"
                                 android:inputType="phone"
                                 android:padding="12dp"
                                 android:maxLength="10"
@@ -209,6 +213,7 @@
                                 android:gravity="left"
                                 android:hint="About you"
                                 android:lines="4"
+                                android:maxLines="4"
                                 android:padding="12dp"
                                 android:textSize="@dimen/buttonSize1" />
 
@@ -316,7 +321,8 @@
                                         android:layout_margin="8dp"
                                         android:background="@drawable/edittext_bg"
                                         android:hint="Designation"
-                                        android:inputType="textCapSentences"
+                                        android:inputType="text"
+                                        android:singleLine="true"
                                         android:padding="12dp"
                                         android:textSize="@dimen/buttonSize1" />
                                 </LinearLayout>
@@ -331,7 +337,7 @@
                                 android:background="@drawable/edittext_bg"
                                 android:hint="Known Languages"
                                 android:padding="12dp"
-                                android:inputType="textCapSentences"
+                                android:inputType="text"
                                 android:textSize="@dimen/buttonSize1" />
 
                             <EditText

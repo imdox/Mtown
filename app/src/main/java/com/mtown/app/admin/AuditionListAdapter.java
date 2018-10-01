@@ -3,6 +3,7 @@ package com.mtown.app.admin;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -112,10 +113,21 @@ public class AuditionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public void showAuditionListDetails(final AuditionDAO auditionDAO, final int position){
             // Attach values for each item
             txtCreatedBy.setText("Created By : "+auditionDAO.getCreated_by_name());
-            txtMobileNo.setText("Mobile No. : 9167186662");
+            txtMobileNo.setText("Mobile No. : "+auditionDAO.getMobile());
             txtTotalModel.setText("Total Models : "+auditionDAO.getTotal_model());
             txModelRole.setText("Role : "+auditionDAO.getRole_type());
             txtRequestAudition.setText(auditionDAO.getAudition_title());
+
+      /*      txtMobileNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try{
+                        String dial = "tel:"+auditionDAO.getMobile();
+                        context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+                    }catch (Exception e){
+                    }
+                }
+            });*/
 
             btnCloseReq.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -123,6 +135,8 @@ public class AuditionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 }
             });
+
+
 
             btnViewDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,10 +177,10 @@ public class AuditionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             txtNoteValue.setTypeface(AppController.getDefaultFont(context));
 
             txtCreatedBy.setText("Created By : "+auditionDAO.getCreated_by_name());
-            txtMobileNo.setText("Mobile No. : 9167186662");
+            txtMobileNo.setText("Mobile No. : "+auditionDAO.getMobile());
             txtTotalModel.setText("Total Models : "+auditionDAO.getTotal_model());
             txModelRole.setText("Role : "+auditionDAO.getRole_type());
-            txtRequestAudition.setText("Title : \n"+auditionDAO.getAudition_title());
+            txtRequestAudition.setText("Audition Title : "+auditionDAO.getAudition_title());
             txtNoteValue.setText(auditionDAO.getNote());
             txtDescriptionValue.setText(auditionDAO.getDescription());
 
@@ -175,6 +189,5 @@ public class AuditionListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }catch (Exception e){
         }
     }
-
 }
 

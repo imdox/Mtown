@@ -1,6 +1,7 @@
 package com.mtown.app.admin;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,8 +45,11 @@ public class AuditionDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audition_details);
-
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         //get Intent
         Intent intentData = getIntent();
         audId = intentData.getStringExtra(getString(R.string.tagUserId));
@@ -101,12 +105,13 @@ public class AuditionDetailsActivity extends AppCompatActivity {
                                 AuditionDAO     auditionDAO = new AuditionDAO(jsonObjectData.getString("audition_title"),
                                             jsonObjectData.getString("created_by_id"),jsonObjectData.getString("created_by_name"),
                                             jsonObjectData.getString("description"),jsonObjectData.getString("id"),
-                                            jsonObjectData.getString("note"),jsonObjectData.getString("role_type"),jsonObjectData.getString("total_model"));
+                                            jsonObjectData.getString("note"),jsonObjectData.getString("role_type"),
+                                        jsonObjectData.getString("total_model"),jsonObjectData.getString("created_by_mobile"));
                                 txtCreatedBy.setText("Created By : "+auditionDAO.getCreated_by_name());
-                                txtMobileNo.setText("Mobile No. : 9167186662");
+                                txtMobileNo.setText("Mobile No. : "+auditionDAO.getMobile());
                                 txtTotalModel.setText("Total Models : "+auditionDAO.getTotal_model());
                                 txModelRole.setText("Role : "+auditionDAO.getRole_type());
-                                txtRequestAudition.setText("Title : \n"+auditionDAO.getAudition_title());
+                                txtRequestAudition.setText("Audition title : "+auditionDAO.getAudition_title());
                                 txtNoteValue.setText(auditionDAO.getNote());
                                 txtDescriptionValue.setText(auditionDAO.getDescription());
 

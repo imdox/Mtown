@@ -1,7 +1,6 @@
-package com.mtown.app;
+package com.mtown.app.admin;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -10,8 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.mtown.app.R;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.home.MainActivity;
 import com.mtown.app.support.AppController;
@@ -29,6 +28,11 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         selectedIds = new ArrayList<String>();
         selectedIdCode = new ArrayList<String>();
         listView = (ListView) findViewById(R.id.listview);

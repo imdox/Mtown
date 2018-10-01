@@ -1,6 +1,7 @@
 package com.mtown.app.admin;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,8 +49,13 @@ public class RequestListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_list);
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setTitle("Audition Request ");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         // Set Layout Manager
@@ -76,6 +82,9 @@ public class RequestListActivity extends AppCompatActivity {
             } else if((AppController.getSharedPref(RequestListActivity.this).getString(getString(R.string.tagGroupType), "").equals("producer"))){
                 createdById = userId;
                 userId = "-1";
+            }else if((AppController.getSharedPref(RequestListActivity.this).getString(getString(R.string.tagGroupType), "").equals("model"))){
+                createdById = "0";
+                userId = AppController.getSharedPref(RequestListActivity.this).getString(getString(R.string.tagModelId), "0");
             }
 
             progressBar.setVisibility(View.VISIBLE);
@@ -96,7 +105,7 @@ public class RequestListActivity extends AppCompatActivity {
                                     AuditionReqDAO auditionReqDAO = new AuditionReqDAO(jsonObjectData.getString("audition_id"),
                                             jsonObjectData.getString("id"),jsonObjectData.getString("audition_images"),
                                             jsonObjectData.getString("model_id"),jsonObjectData.getString("mt_comment"),
-                                            jsonObjectData.getString("mt_conformation"),jsonObjectData.getString("notification"),
+                                            jsonObjectData.getString("mt_confirmation"),jsonObjectData.getString("notification"),
                                             jsonObjectData.getString("reason"),jsonObjectData.getString("result_status"),jsonObjectData.getString("audition_title"),
                                             jsonObjectData.getString("created_by_id"),jsonObjectData.getString("created_by_name"),
                                             jsonObjectData.getString("description"),
@@ -118,7 +127,6 @@ public class RequestListActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(RequestListActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     if (error instanceof TimeoutError || error instanceof NoConnectionError)
                         Log.d("TAG.......", "v1: " + error);
@@ -159,6 +167,14 @@ public class RequestListActivity extends AppCompatActivity {
             auditionReqListAdapter.setAdapterData(adapterList);
             auditionReqListAdapter.notifyDataSetChanged();
         } catch (Exception e){
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(adapterList!=null){
+            auditionReqListAdapter.notifyDataSetChanged();
         }
     }
 }

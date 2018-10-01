@@ -140,6 +140,7 @@ public class AuthActivity extends AppCompatActivity implements  View.OnClickList
                                 AppController.getSharedPrefEditor(AuthActivity.this).putString(getString(R.string.tagGroupType), jsonObjectData.getString(getString(R.string.tagGroupType))).commit();
                                 AppController.getSharedPrefEditor(AuthActivity.this).putString(getString(R.string.tagIsProfile), jsonObjectData.getString(getString(R.string.tagIsProfile))).commit();
                                 AppController.getSharedPrefEditor(AuthActivity.this).putString(getString(R.string.tagModelId), jsonObjectData.getString(getString(R.string.tagModelId))).commit();
+                                AppController.getSharedPrefEditor(AuthActivity.this).putString("mobile", txtLoginEmail.getText().toString().trim()).commit();
 
                                 Toast.makeText(AuthActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);
@@ -151,6 +152,7 @@ public class AuthActivity extends AppCompatActivity implements  View.OnClickList
                                 AppController.getSharedPrefEditor(AuthActivity.this).putString(getString(R.string.tagGroupType), jsonObjectData.getString(getString(R.string.tagGroupType))).commit();
                                 AppController.getSharedPrefEditor(AuthActivity.this).putString(getString(R.string.tagIsProfile), jsonObjectData.getString(getString(R.string.tagIsProfile))).commit();
                                 AppController.getSharedPrefEditor(AuthActivity.this).putString(getString(R.string.tagModelId), jsonObjectData.getString(getString(R.string.tagModelId))).commit();
+                                AppController.getSharedPrefEditor(AuthActivity.this).putString("mobile", txtLoginEmail.getText().toString().trim()).commit();
 
                                 Toast.makeText(AuthActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(AuthActivity.this, MainActivity.class);

@@ -2,14 +2,13 @@ package com.mtown.app.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,16 +23,12 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.mtown.app.ListActivity;
 import com.mtown.app.R;
-import com.mtown.app.dao.ModelDAO;
-import com.mtown.app.home.MainActivity;
 import com.mtown.app.support.AppController;
 import com.mtown.app.support.Validation;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,8 +49,11 @@ public class CreateAuditionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_audition);
         AppController.modelIds = "";
         AppController.modelCode = "";
-
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        } progressBar = (ProgressBar)findViewById(R.id.progressBar);
         btnCreateAudition  = findViewById(R.id.btnCreateAudition);
 
         txtAuditionTitle = findViewById(R.id.txtAuditionTitle);
@@ -110,12 +108,10 @@ public class CreateAuditionActivity extends AppCompatActivity {
 
     private void getUserDetails(){
         try {
-            progressBar.setVisibility(View.VISIBLE);
             StringRequest strReq = new StringRequest(Request.Method.POST, getString(R.string.defaultURL), new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
-                        progressBar.setVisibility(View.GONE);
                         JSONObject jsonObject = new JSONObject(response);
                         if(jsonObject.getString(getString(R.string.tagStatus)).equals(getString(R.string.tagStatusValue))){
                             JSONObject jsonObjectData = jsonObject.getJSONObject(getString(R.string.tagResult));
@@ -172,14 +168,12 @@ public class CreateAuditionActivity extends AppCompatActivity {
                             Toast.makeText(CreateAuditionActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)),Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
-                        Toast.makeText(CreateAuditionActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(CreateAuditionActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                     if (error instanceof TimeoutError || error instanceof NoConnectionError)
                         Log.d("TAG.......", "v1: " + error);

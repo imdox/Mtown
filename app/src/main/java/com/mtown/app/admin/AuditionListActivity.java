@@ -1,6 +1,7 @@
 package com.mtown.app.admin;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,8 +52,13 @@ public class AuditionListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.audition_list);
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         getSupportActionBar().setTitle("Audition List");
+       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         // Set Layout Manager
@@ -62,13 +68,13 @@ public class AuditionListActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         if (AppController.isConnectingToInternet(this)) {
-            getModelDetails();
+            getAuditionList();
         } else {
             Toast.makeText(AuditionListActivity.this, "Please connect to internet", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void getModelDetails() {
+    public void getAuditionList() {
         try {
              userId = AppController.getSharedPref(AuditionListActivity.this).getString(getString(R.string.tagUserId), "0");
             if(AppController.getSharedPref(AuditionListActivity.this).getString(getString(R.string.tagGroupType), "").equals("admin")){
@@ -83,6 +89,7 @@ public class AuditionListActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         if(jsonObject.getString(getString(R.string.tagStatus)).equals(getString(R.string.tagStatusValue))){
                             JSONArray jsonArray = jsonObject.getJSONArray(getString(R.string.tagResult));
+                            Toast.makeText(AuditionListActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
                             if(jsonArray.length()>0){
                                 auditionDAOS = new ArrayList<AuditionDAO>();
                                 for(int i=0;i<jsonArray.length();i++){
@@ -92,7 +99,8 @@ public class AuditionListActivity extends AppCompatActivity {
                                     AuditionDAO newsDAO = new AuditionDAO(jsonObjectData.getString("audition_title"),
                                             jsonObjectData.getString("created_by_id"),jsonObjectData.getString("created_by_name"),
                                             jsonObjectData.getString("description"),jsonObjectData.getString("id"),
-                                            jsonObjectData.getString("note"),jsonObjectData.getString("role_type"),jsonObjectData.getString("total_model"));
+                                            jsonObjectData.getString("note"),jsonObjectData.getString("role_type"),
+                                            jsonObjectData.getString("total_model"),jsonObjectData.getString("created_by_mobile"));
                                     auditionDAOS.add(newsDAO);
                                 }
                                 setAdapter();
@@ -100,10 +108,9 @@ public class AuditionListActivity extends AppCompatActivity {
                                 Toast.makeText(AuditionListActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(AuditionListActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(AuditionListActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)),Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
-                        Toast.makeText(AuditionListActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
