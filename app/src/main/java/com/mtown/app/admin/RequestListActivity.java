@@ -85,6 +85,10 @@ public class RequestListActivity extends AppCompatActivity {
             }else if((AppController.getSharedPref(RequestListActivity.this).getString(getString(R.string.tagGroupType), "").equals("model"))){
                 createdById = "0";
                 userId = AppController.getSharedPref(RequestListActivity.this).getString(getString(R.string.tagModelId), "0");
+                if(createdById.equals("0")&&userId.equals("0")){
+                    Toast.makeText(RequestListActivity.this, "Audition Request list not available.",Toast.LENGTH_LONG).show();
+                    return;
+                }
             }
 
             progressBar.setVisibility(View.VISIBLE);

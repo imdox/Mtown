@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
 import com.mtown.app.R;
 import com.mtown.app.admin.MyListViewAdapter;
 import com.mtown.app.user.AddEditUserActivity;
@@ -64,7 +63,8 @@ public class GalleryURLImageAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        Glide.with(mContext).load(mArrayUrl[index]).signature(new StringSignature(String.valueOf(System.currentTimeMillis()))).into(holder.myImg);
+        Glide.with(mContext).load(mArrayUrl[index].toString().trim())
+                .into(holder.myImg);
         return view;
     }
 

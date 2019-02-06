@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mtown</string>
+    <string name="app_name">Casting Bell</string>
     <string name="tagAppData">AppData</string>
     <string name="tagIsLoginUser">isLogin</string>
     <string name="defaultURL">http://imdox.com/mtown/api.php</string>

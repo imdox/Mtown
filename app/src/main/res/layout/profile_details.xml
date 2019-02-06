@@ -38,7 +38,7 @@
                     android:elevation="5dp"
                     android:padding="2dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/logo_t" />
+                    android:src="@drawable/logo_b" />
 
                 <RelativeLayout
                     android:id="@+id/profile_layout"

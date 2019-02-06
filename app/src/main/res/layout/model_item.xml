@@ -36,7 +36,6 @@
                     android:adjustViewBounds="false"
                     android:visibility="visible"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/logo_b"
                     android:scaleType="centerCrop"/>
 
             </LinearLayout>

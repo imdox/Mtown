@@ -31,7 +31,7 @@
                 <ImageView
                     android:layout_width="170dp"
                     android:layout_height="150dp"
-                    android:src="@drawable/logo_t" />
+                    android:src="@drawable/logo_b" />
 
                 <TextView
                     android:id="@+id/txtLoginMsgText"

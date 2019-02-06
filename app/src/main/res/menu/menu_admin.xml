@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:iconTint="@color/colorMenu">
 
   <item android:id="@+id/idSearch"
       android:title="Search"
@@ -25,5 +26,6 @@
       android:orderInCategory="100"
       android:icon="@drawable/ic_power_settings_new_black_24dp"
       app:showAsAction="never" />
+  <group />
 
 </menu>

@@ -27,6 +27,8 @@ public class ModelDAO {
         this.email = email;
     }
 
+
+
     public String getEmail() {
         return email;
     }

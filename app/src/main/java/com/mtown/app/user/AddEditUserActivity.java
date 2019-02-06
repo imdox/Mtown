@@ -1,5 +1,6 @@
 package com.mtown.app.user;
 
+import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,12 +15,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +39,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
 import com.mtown.app.R;
 import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.dao.ModelDAO;
@@ -53,6 +55,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,8 +64,9 @@ public class AddEditUserActivity extends AppCompatActivity {
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     private EditText edtFirstName,edtLastName,txtMobile,txtEmail,edtAbout,edtHeight,edtWeight,edtSkinColor,edtEyeColor,edtExperience,
-            edtDesignation,edtAge,txtLanguages;
+            edtDesignation,txtLanguages;
     private Button btnAddEditProfile,btnProfileImage,btnSelectCover;
+    private TextView txtDate;
 
     private int isUpdate = 0;
     private ProgressBar progressBar;
@@ -71,6 +75,7 @@ public class AddEditUserActivity extends AppCompatActivity {
     private Gallery gallery;
     private Uri mImageUri;
     private JSONObject jsonObject;
+    private int mYear, mMonth, mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +104,32 @@ public class AddEditUserActivity extends AppCompatActivity {
         edtEyeColor = findViewById(R.id.edtEyeColor);
         edtExperience = findViewById(R.id.edtExperience);
         edtDesignation = findViewById(R.id.edtDesignation);
-        edtAge = findViewById(R.id.edtAge);
+        txtDate = findViewById(R.id.edtAge);
         txtLanguages = findViewById(R.id.txtLanguages);
+
+        txtDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    final Calendar c = Calendar.getInstance();
+                    mYear = c.get(Calendar.YEAR);
+                    mMonth = c.get(Calendar.MONTH);
+                    mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AddEditUserActivity.this,
+                            new DatePickerDialog.OnDateSetListener() {
+
+                                @Override
+                                public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
+                                    txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                }
+                            }, mYear, mMonth, mDay);
+                    datePickerDialog.show();
+                }catch (Exception e){
+                }
+            }
+        });
 
 
         edtFirstName.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
@@ -114,7 +143,7 @@ public class AddEditUserActivity extends AppCompatActivity {
         edtEyeColor.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
         edtExperience.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
         edtDesignation.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtAge.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
+        txtDate.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
         txtLanguages.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
         btnAddEditProfile.setTypeface(AppController.getDefaultBoldFont(AddEditUserActivity.this));
         btnProfileImage.setTypeface(AppController.getDefaultBoldFont(AddEditUserActivity.this));
@@ -174,8 +203,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                     } else if (!Validation.hasText(edtExperience)) {
                     } else if (!Validation.hasText(edtDesignation)) {
                     } else if (!Validation.hasText(txtLanguages)) {
-                    } else if (!Validation.hasText(edtAge)) {
-                    } else {
+                    }else {
                         createUpdatePI();
                     }
                 } else{
@@ -199,7 +227,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             edtEyeColor.setText(modelDAOS.get(0).getEye_color());
             edtExperience.setText(modelDAOS.get(0).getExperience());
             edtDesignation.setText(modelDAOS.get(0).getDesignation());
-            edtAge.setText(modelDAOS.get(0).getAge());
+            txtDate.setText(modelDAOS.get(0).getAge());
             txtLanguages.setText(modelDAOS.get(0).getKnown_languages());
             if(modelDAOS.get(0).getGender().equals("Male")){
                 radioMale.setChecked(true);
@@ -210,8 +238,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             }
             if(modelDAOS.get(0).getProfile_image().length()>5){
                 imgData = (ImageView)findViewById(R.id.selectedImg);
-                Glide.with(AddEditUserActivity.this).load(modelDAOS.get(0).getProfile_image())
-                        .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                Glide.with(AddEditUserActivity.this).load(modelDAOS.get(0).getProfile_image().toString().trim())
                         .into(imgData);
             }
             if(modelDAOS.get(0).getModel_images().length>4){
@@ -266,8 +293,8 @@ public class AddEditUserActivity extends AppCompatActivity {
 
                         int columnIndex = cursor.getColumnIndex(filePathColumnP[0]);
                         imageURI  = cursor.getString(columnIndex);
-                        double size = imageURI.length() / 1024;
-                        Toast.makeText(AddEditUserActivity.this,"Size : " +String.valueOf(size),Toast.LENGTH_SHORT).show();
+                       // double size = imageURI.length() / 1024;
+                        //Toast.makeText(AddEditUserActivity.this,"Size : " +String.valueOf(size),Toast.LENGTH_SHORT).show();
                         profileExt = imageURI.substring(imageURI.lastIndexOf("."));
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageUri);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -353,7 +380,12 @@ public class AddEditUserActivity extends AppCompatActivity {
             }
 
             try {
-                String strExt = extension.toString().replace("[","");
+                String strExt = "";
+                try{
+                     strExt = extension.toString().replace("[","");
+                }catch (Exception e){
+
+                }
                 jsonObject.put("profile_ext", profileExt);
                 jsonObject.put("model_ext", strExt.replace("]",""));
                 jsonObject.put("profile_image", jsonPArray);
@@ -365,7 +397,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                 jsonObject.put("mobile", txtMobile.getText().toString().trim());
                 jsonObject.put("about_you", edtAbout.getText().toString().trim());
                 jsonObject.put("email", txtEmail.getText().toString().trim());
-                jsonObject.put("age", edtAge.getText().toString().trim());
+                jsonObject.put("age", txtDate.getText().toString().trim());
                 jsonObject.put("gender", radioSexButton.getText().toString().trim());
                 jsonObject.put("experience", edtExperience.getText().toString().trim());
                 jsonObject.put("designation", edtDesignation.getText().toString().trim());

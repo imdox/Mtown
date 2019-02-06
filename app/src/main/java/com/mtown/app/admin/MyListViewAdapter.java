@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
 import com.mtown.app.R;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.support.AppController;
@@ -67,8 +66,7 @@ public class MyListViewAdapter extends ArrayAdapter<ModelDAO> {
         holder.txtDesignation.setText("Designation : "+modelDAOS.get(position).getDesignation());
         holder.txtExp.setText("Experience : "+modelDAOS.get(position).getExperience()+" years");
         // Capture position and set to the  ImageView
-        Glide.with(myContext).load(modelDAOS.get(position).getProfile_image())
-                .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+        Glide.with(myContext).load(modelDAOS.get(position).getProfile_image().toString().trim())
                 .into(holder.myImg);
         return view;
     }

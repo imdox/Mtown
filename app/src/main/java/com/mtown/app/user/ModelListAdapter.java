@@ -26,7 +26,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
 import com.mtown.app.R;
 import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.dao.ModelDAO;
@@ -42,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 
 public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -143,8 +143,7 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 imgStatus.setImageResource(R.drawable.ic_check_circle_black_24dp);
             }
             txtModelId.setText(modelDAO.getModel_code());
-            Glide.with(context).load(modelDAO.getProfile_image())
-                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+            Glide.with(context).load(modelDAO.getProfile_image().toString().trim())
                     .into(imgModel);
             imgModel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -229,8 +228,7 @@ public class ModelListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             txtModelName.setText("Name : "+searchDAO.getFirstname()+ " "+searchDAO.getLastname());
             txtModelDes.setText("Designation : "+searchDAO.getDesignation());
             txtModelExp.setText("Experience : "+searchDAO.getExperience()+" years");
-            Glide.with(context).load(searchDAO.getProfile_image())
-                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+            Glide.with(context).load(searchDAO.getProfile_image().toString().trim())
                     .into(imgModel);
             imgModel.setOnClickListener(new View.OnClickListener() {
                 @Override

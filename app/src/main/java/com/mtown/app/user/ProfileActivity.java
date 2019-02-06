@@ -3,12 +3,14 @@ package com.mtown.app.user;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.TooltipCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.signature.StringSignature;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mtown.app.R;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.home.MainActivity;
@@ -129,17 +131,15 @@ public class ProfileActivity extends AppCompatActivity {
 //                    ((TextView)page.findViewById(R.id.txtRequestAudition)).setVisibility(View.GONE);
 //                }
             }
-
-            ((TextView)page.findViewById(R.id.user_profile_name)).setText(modelProfileDAOS.get(position).getFirstname() +" "+ modelProfileDAOS.get(position).getLastname());
+//modelProfileDAOS.get(position).getFirstname() +" "+ modelProfileDAOS.get(position).getLastname()
+            ((TextView)page.findViewById(R.id.user_profile_name)).setText(modelProfileDAOS.get(position).getModel_code());
             ((TextView)page.findViewById(R.id.user_profile_short_bio)).setText(modelProfileDAOS.get(position).getDesignation());
 
             Glide.with(ProfileActivity.this)
-                     .load(modelProfileDAOS.get(position).getProfile_image())
-                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                     .load(modelProfileDAOS.get(position).getProfile_image().toString().trim())
                     .into(((ImageView)page.findViewById(R.id.user_profile_photo)));
 
-            Glide.with(ProfileActivity.this).load(modelProfileDAOS.get(position).getModel_images()[0])
-                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+            Glide.with(ProfileActivity.this).load(modelProfileDAOS.get(position).getModel_images()[0].toString().trim())
                     .into(((ImageView)page.findViewById(R.id.header_cover_image)));
 
             ((TextView)page.findViewById(R.id.txtHeadingAboutValue)).setText(modelProfileDAOS.get(position).getAbout_you());
@@ -211,20 +211,27 @@ public class ProfileActivity extends AppCompatActivity {
                 index=currentPage;
             }
             String strUrl = modelProfileDAOS.get(index).getModel_images()[position];
-            Glide.with(ProfileActivity.this).load(strUrl)
-                    .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+            Log.e("+++++++++++++++++ : ",strUrl);
+            Glide.with(ProfileActivity.this).load(strUrl.toString().trim())
+                    .thumbnail(0.5f)
+                    .crossFade()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(((ImageView)page.findViewById(R.id.imgModel)));
+//            Glide.with(ProfileActivity.this).load(strUrl)
+//                    .into(((ImageView)page.findViewById(R.id.imgModel)));
            // ((TouchImageView)page.findViewById(R.id.imgModel)).setMaxZoom(5f);
             //Add the page to the front of the queue
             ((ViewPager) container).addView(page, 0);
             return page;
         }
+
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
             //See if object from instantiateItem is related to the given view
             //required by API
             return arg0==(View)arg1;
         }
+
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             ((ViewPager) container).removeView((View) object);

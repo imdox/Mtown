@@ -39,7 +39,7 @@
                     android:visibility="visible"
                     android:layout_gravity="center"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/logo_b"
+                    android:src="@drawable/image_bg"
                     android:scaleType="centerCrop"/>
 
                 <LinearLayout
@@ -86,6 +86,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="14sp"
                         android:gravity="left"
+                        android:visibility="gone"
                        android:paddingLeft="8dp"
                         android:layout_weight="1"
                         android:typeface="sans" />

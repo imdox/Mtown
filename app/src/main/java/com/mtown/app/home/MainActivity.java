@@ -1,6 +1,7 @@
 package com.mtown.app.home;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,6 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.sentry.Sentry;
+
 public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<ModelDAO> modelDAOS;
@@ -68,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //checkPermission(Manifest.permission.CALL_PHONE);
+
+        Context ctx = this.getApplicationContext();
+        Sentry.init("https://9ca5182254934a0f8c812de9ff24e3ec@sentry.io/1363819");
+
         AdRequest addRequest = new AdRequest.Builder()
                 .addTestDevice("E07693B78D043837CF9399C247ABE73D").build();
         interstitialAd = new InterstitialAd(MainActivity.this);
@@ -81,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setLogo(R.mipmap.ic_launcher);
+//        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -162,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
         }
     }
+
+
 
     public void getModelList() {
         try {

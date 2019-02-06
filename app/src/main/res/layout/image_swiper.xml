@@ -5,8 +5,6 @@
     android:gravity="center"
     android:layout_height="match_parent">
 
-
-
     <ImageView
         android:id="@+id/imgModel"
         android:layout_width="match_parent"
