@@ -61,15 +61,21 @@
             android:parentActivityName=".home.MainActivity" />
         <activity
             android:name=".admin.ListActivity"
-            android:parentActivityName=".home.MainActivity"></activity>
+            android:parentActivityName=".admin.CreateAuditionActivity" />
         <activity
             android:name=".search.SearchActivity"
             android:label="Search Models"
-            android:parentActivityName=".home.MainActivity"></activity>
+            android:parentActivityName=".home.MainActivity" />
         <activity
             android:name=".user.AcceptAuditionActivity"
             android:label="Accept Audition Request"
-            android:parentActivityName=".admin.RequestListActivity"></activity>
+            android:parentActivityName=".admin.RequestListActivity" />
+        <activity android:name=".admin.StatsActivity"
+            android:label="Statistics"></activity>
+        <activity android:name=".user.AddModelActivity"
+            android:label="Statistics"></activity>
+
+
     </application>
 
 </manifest>

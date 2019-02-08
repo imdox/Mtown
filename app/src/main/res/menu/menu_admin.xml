@@ -9,11 +9,24 @@
       android:icon="@drawable/ic_search_black_24dp"
       app:showAsAction="always" />
 
+  <item android:id="@+id/idAdminAdd"
+      android:title="Add Model"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_person_outline_black_24dp"
+      app:showAsAction="never" />
+
+  <item android:id="@+id/idAdminStats"
+      android:title="Statistics"
+      android:orderInCategory="100"
+      android:icon="@drawable/ic_person_outline_black_24dp"
+      app:showAsAction="never" />
+
   <item android:id="@+id/idAuditionList"
       android:title="Audition List"
       android:orderInCategory="100"
       android:icon="@drawable/ic_person_outline_black_24dp"
       app:showAsAction="never" />
+
 
   <item android:id="@+id/idAuditionReqList"
       android:title="Request List"

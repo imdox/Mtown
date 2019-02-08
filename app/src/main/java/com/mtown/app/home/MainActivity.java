@@ -36,11 +36,13 @@ import com.mtown.app.R;
 import com.mtown.app.admin.AuditionListActivity;
 import com.mtown.app.admin.CreateAuditionActivity;
 import com.mtown.app.admin.RequestListActivity;
+import com.mtown.app.admin.StatsActivity;
 import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.search.SearchActivity;
 import com.mtown.app.support.AppController;
 import com.mtown.app.user.AddEditUserActivity;
+import com.mtown.app.user.AddModelActivity;
 import com.mtown.app.user.ModelListAdapter;
 import com.mtown.app.user.ProfileActivity;
 
@@ -335,6 +337,17 @@ public class MainActivity extends AppCompatActivity {
             //RequestListActivity
             startActivity(new Intent(MainActivity.this,SearchActivity.class));
             return(true);
+
+        case R.id.idAdminStats:
+            //RequestListActivity
+            startActivity(new Intent(MainActivity.this,StatsActivity.class));
+            return(true);
+
+        case R.id.idAdminAdd:
+            //RequestListActivity
+            startActivity(new Intent(MainActivity.this,AddModelActivity.class));
+            return(true);
+
 
 
         }

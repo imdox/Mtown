@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,22 +24,14 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.mtown.app.R;
-import com.mtown.app.auth.AuthActivity;
 import com.mtown.app.dao.ModelDAO;
 import com.mtown.app.home.MainActivity;
 import com.mtown.app.support.AppController;
@@ -56,15 +47,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
-public class AddEditUserActivity extends AppCompatActivity {
+public class AddModelActivity extends AppCompatActivity {
 
     private RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
-    private EditText edtFirstName,edtLastName,txtMobile,txtEmail,edtAbout,edtHeight,edtWeight,edtSkinColor,edtEyeColor,edtExperience,
-            edtDesignation,txtLanguages;
+    private EditText edtFirstName,edtLastName,txtEmail,edtAbout,edtHeight,edtWeight,edtSkinColor,edtEyeColor,edtExperience,
+            edtDesignation,txtLanguages,txtLoginEmail,txtLoginPassword;
+    //txtMobile
     private Button btnAddEditProfile,btnProfileImage,btnSelectCover;
     private TextView txtDate;
 
@@ -80,7 +70,7 @@ public class AddEditUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_edit_user);
+        setContentView(R.layout.activity_add_model);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -95,7 +85,7 @@ public class AddEditUserActivity extends AppCompatActivity {
 
         edtFirstName = findViewById(R.id.edtFirstName);
         edtLastName = findViewById(R.id.edtLastName);
-        txtMobile = findViewById(R.id.txtMobile);
+        //txtMobile = findViewById(R.id.txtMobile);
         txtEmail = findViewById(R.id.txtEmail);
         edtAbout = findViewById(R.id.edtAbout);
         edtHeight = findViewById(R.id.edtHeight);
@@ -106,6 +96,8 @@ public class AddEditUserActivity extends AppCompatActivity {
         edtDesignation = findViewById(R.id.edtDesignation);
         txtDate = findViewById(R.id.edtAge);
         txtLanguages = findViewById(R.id.txtLanguages);
+        txtLoginEmail = findViewById(R.id.txtLoginEmail);
+        txtLoginPassword = findViewById(R.id.txtLoginPassword);
 
         txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +109,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                     mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(AddEditUserActivity.this,
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(AddModelActivity.this,
                             new DatePickerDialog.OnDateSetListener() {
 
                                 @Override
@@ -132,28 +124,30 @@ public class AddEditUserActivity extends AppCompatActivity {
         });
 
 
-        edtFirstName.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtLastName.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        txtMobile.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        txtEmail.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtAbout.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtHeight.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtWeight.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtSkinColor.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtEyeColor.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtExperience.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        edtDesignation.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        txtDate.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        txtLanguages.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        btnAddEditProfile.setTypeface(AppController.getDefaultBoldFont(AddEditUserActivity.this));
-        btnProfileImage.setTypeface(AppController.getDefaultBoldFont(AddEditUserActivity.this));
-        btnSelectCover.setTypeface(AppController.getDefaultBoldFont(AddEditUserActivity.this));
+        edtFirstName.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtLastName.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        //txtMobile.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        txtEmail.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtAbout.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtHeight.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtWeight.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtSkinColor.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtEyeColor.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtExperience.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        edtDesignation.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        txtDate.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        txtLanguages.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        txtLoginEmail.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        txtLoginPassword.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        btnAddEditProfile.setTypeface(AppController.getDefaultBoldFont(AddModelActivity.this));
+        btnProfileImage.setTypeface(AppController.getDefaultBoldFont(AddModelActivity.this));
+        btnSelectCover.setTypeface(AppController.getDefaultBoldFont(AddModelActivity.this));
 
         radioMale  = (RadioButton) findViewById(R.id.radioMale);
         radioFemale  = (RadioButton) findViewById(R.id.radioFemale);
 
-        radioMale.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
-        radioFemale.setTypeface(AppController.getDefaultFont(AddEditUserActivity.this));
+        radioMale.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
+        radioFemale.setTypeface(AppController.getDefaultFont(AddModelActivity.this));
 
         radioSexGroup = findViewById(R.id.radioSex);
 
@@ -190,9 +184,11 @@ public class AddEditUserActivity extends AppCompatActivity {
                 radioSexButton =  findViewById(selectedId);
                 boolean isValidData = false;
 
-                if (AppController.isConnectingToInternet(AddEditUserActivity.this)) {
-                    if (!Validation.hasMobileText(txtMobile)) {
-                    } else if (!Validation.hasText(edtFirstName)) {
+                if (AppController.isConnectingToInternet(AddModelActivity.this)) {
+                  /*  if (!Validation.hasMobileText(txtMobile)) {
+                    } else*/
+
+                        if (!Validation.hasText(edtFirstName)) {
                     } else if (!Validation.hasText(edtLastName)) {
                     } else if (!Validation.hasText(txtEmail)) {
                     } else if (!Validation.hasText(edtAbout)) {
@@ -207,7 +203,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                         createUpdatePI();
                     }
                 } else{
-                    Toast.makeText(AddEditUserActivity.this, "Please connect to internet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddModelActivity.this, "Please connect to internet", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -238,7 +234,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             }
             if(modelDAOS.get(0).getProfile_image().length()>5){
                 imgData = (ImageView)findViewById(R.id.selectedImg);
-                Glide.with(AddEditUserActivity.this).load(modelDAOS.get(0).getProfile_image().toString().trim())
+                Glide.with(AddModelActivity.this).load(modelDAOS.get(0).getProfile_image().toString().trim())
                         .into(imgData);
             }
             if(modelDAOS.get(0).getModel_images().length>4){
@@ -250,7 +246,7 @@ public class AddEditUserActivity extends AppCompatActivity {
             btnAddEditProfile.setText("Update Profile");
         }
 
-        txtMobile.setText(AppController.getSharedPref(AddEditUserActivity.this).getString("mobile",""));
+        //txtMobile.setText(AppController.getSharedPref(AddModelActivity.this).getString("mobile",""));
         jsonObject = new JSONObject();
         encodedCImageList = new ArrayList<>();
         encodedPImageList = new ArrayList<>();
@@ -336,7 +332,7 @@ public class AddEditUserActivity extends AppCompatActivity {
                             if(file.exists()) {
                                 double bytes = file.length();
                                 double kilobytes = (bytes / 1024);
-                                Toast.makeText(AddEditUserActivity.this,"file size : "+kilobytes,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AddModelActivity.this,"file size : "+kilobytes,Toast.LENGTH_SHORT).show();
                             }
                             extension.add(imageURI.substring(imageURI.lastIndexOf(".")));
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
@@ -390,11 +386,11 @@ public class AddEditUserActivity extends AppCompatActivity {
                 jsonObject.put("model_ext", strExt.replace("]",""));
                 jsonObject.put("profile_image", jsonPArray);
                 jsonObject.put("model_images", jsonCArray);
-                jsonObject.put(getString(R.string.tag), "create_update_model");
-                jsonObject.put("id", AppController.getSharedPref(AddEditUserActivity.this).getString(getString(R.string.tagModelId),"0"));
+                jsonObject.put(getString(R.string.tag), "add_model_by_admin");
+                jsonObject.put("id", AppController.getSharedPref(AddModelActivity.this).getString(getString(R.string.tagModelId),"0"));
                 jsonObject.put("firstname", edtFirstName.getText().toString().trim());
                 jsonObject.put("lastname", edtLastName.getText().toString().trim());
-                jsonObject.put("mobile", txtMobile.getText().toString().trim());
+               // jsonObject.put("mobile", txtMobile.getText().toString().trim());
                 jsonObject.put("about_you", edtAbout.getText().toString().trim());
                 jsonObject.put("email", txtEmail.getText().toString().trim());
                 jsonObject.put("age", txtDate.getText().toString().trim());
@@ -406,7 +402,9 @@ public class AddEditUserActivity extends AppCompatActivity {
                 jsonObject.put("skin_color", edtSkinColor.getText().toString().trim());
                 jsonObject.put("eye_color", edtEyeColor.getText().toString().trim());
                 jsonObject.put("known_languages", txtLanguages.getText().toString().trim());
-                jsonObject.put("user_id", AppController.getSharedPref(AddEditUserActivity.this).getString(getString(R.string.tagUserId),""));
+                jsonObject.put("user_id", AppController.getSharedPref(AddModelActivity.this).getString(getString(R.string.tagUserId),""));
+                jsonObject.put("mobile", txtLoginEmail.getText().toString().trim());
+                jsonObject.put("password", txtLoginPassword.getText().toString().trim());
 
             } catch (JSONException e) {
                 Log.e("JSONObject Here", e.toString());
@@ -418,15 +416,15 @@ public class AddEditUserActivity extends AppCompatActivity {
                             try {
                                 progressBar.setVisibility(View.GONE);
                                 if(jsonObject.getString(getString(R.string.tagStatus)).equals(getString(R.string.tagStatusValue))){
-                                    AppController.getSharedPrefEditor(AddEditUserActivity.this).putString(getString(R.string.tagIsProfile), "1").commit();
-                                    AppController.getSharedPrefEditor(AddEditUserActivity.this).putString(getString(R.string.tagModelId), jsonObject.getString(getString(R.string.tagModelId))).commit();
-                                    Toast.makeText(AddEditUserActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
+                                    AppController.getSharedPrefEditor(AddModelActivity.this).putString(getString(R.string.tagIsProfile), "1").commit();
+                                    AppController.getSharedPrefEditor(AddModelActivity.this).putString(getString(R.string.tagModelId), jsonObject.getString(getString(R.string.tagModelId))).commit();
+                                    Toast.makeText(AddModelActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)), Toast.LENGTH_SHORT).show();
                                     finish();
                                 } else {
-                                    Toast.makeText(AddEditUserActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddModelActivity.this, jsonObject.getString(getString(R.string.tagSuccessMsg)),Toast.LENGTH_LONG).show();
                                 }
                             } catch (Exception e) {
-                                Toast.makeText(AddEditUserActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
+                                Toast.makeText(AddModelActivity.this, "Oops! Something went wrong.",Toast.LENGTH_LONG).show();
                                 e.printStackTrace();
                             }
                         }

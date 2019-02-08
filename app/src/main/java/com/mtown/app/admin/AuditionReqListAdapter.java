@@ -163,8 +163,10 @@ public class AuditionReqListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 btnAcceptReq.setVisibility(View.VISIBLE);
                 btnRejectReq.setVisibility(View.VISIBLE);
                 if(auditionReqDAO.getMt_conformation().equals("1") || auditionReqDAO.getMt_conformation().equals("2")){
-                    btnAcceptReq.setEnabled(false);
-                    btnRejectReq.setEnabled(false);
+                   // btnAcceptReq.setEnabled(false);
+                   // btnRejectReq.setEnabled(false);
+                    btnAcceptReq.setVisibility(View.GONE);
+                    btnRejectReq.setVisibility(View.GONE);
                 }
             }else {
                 layUserAction.setVisibility(View.VISIBLE);
